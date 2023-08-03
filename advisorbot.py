@@ -1,19 +1,28 @@
-import re
-import requests
+"""Final Project for Advanced Programming in Python"""
+
+
 import time
-import random
 import os
-os.system ("pip3 install slackclient==1.3.1")
-os.system ("pip3 install bs4")
-import asyncio
+try:
+    # If running in Jupyter Notebook, install dependencies
+    #get_ipython()  # Check if running in Jupyter Notebook
+    os.system ("pip3 install slackclient==1.3.1 bs4 requests")
+except NameError:
+    print("Not running in Jupyter Notebook. Install deoendencies manually.\n pip3 install slackclient==1.3.1 bs4 requests")
+    exit()
+
+import requests
 from slackclient import SlackClient
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
-SLACK_BOT_TOKEN = "xoxb-859009776726-844026334706-rOiJDJrc7OmqPiPEWe06iDTo"
+#Get slack bot token from environment variable or user input
+SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN") or input("Enter your slack bot token: ")
+general_channel = os.environ.get("GENERAL_CHANNEL_ID") or input("Enter the general channel id: ")
+BOT_USER_ID = os.environ.get("BOT_USER_ID") or input("Enter the bot user id: ")
+
+# Initialize slack client
 slack_client = SlackClient(SLACK_BOT_TOKEN)
-general_channel = "CQV9TG29Z"
-BOT_USER_ID = "UQU0S9ULS"
 
 COURSE_DATA_KEYWORDS=keywords=["Section:", "Class No:", "Class Type:", "Enroll Stat:", "Open Seats:", "Open Restricted Seats:", "Wait List:","Meeting Day/Time/Location:"]
 COURSE_TITLE_ID=["contentMain_lblSubject", "contentMain_lblCatNo", "contentMain_lblLongTitle"]
